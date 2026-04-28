@@ -144,53 +144,12 @@ go run cmd/main.go
 
 ---
 
-## 🔌 API 接口文档
+## 📄 项目文档
 
-### 用户（公开）
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| POST | `/api/v1/user/register` | 注册 |
-| POST | `/api/v1/user/login` | 登录，返回 JWT Token |
+详细的技术方案和 API 接口说明请查阅 docs 目录：
 
-### AI 对话（需登录）
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| POST | `/api/v1/ai/generate` | 同步 AI 文章生成（消耗 AI 额度） |
-| POST | `/api/v1/ai/rag-generate` | RAG 智能问答（消耗 RAG 额度） |
-| GET | `/api/v1/ai/rag-history` | 获取 RAG 问答历史列表 |
-| GET | `/api/v1/ai/rag-history/:id` | 获取历史详情 |
-| DELETE | `/api/v1/ai/rag-history/:id` | 删除单条历史 |
-| DELETE | `/api/v1/ai/rag-history` | 清空所有历史 |
-
-### 文档（需登录）
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| POST | `/api/v1/documents` | 上传文档（自动向量化） |
-| GET | `/api/v1/documents` | 获取文档列表 |
-| GET | `/api/v1/documents/:id` | 获取文档详情 |
-| DELETE | `/api/v1/documents/:id` | 删除文档 |
-
-### 异步任务（需登录）
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| POST | `/api/v1/tasks/generate` | 提交异步生成任务 |
-| GET | `/api/v1/tasks` | 获取任务列表 |
-| GET | `/api/v1/tasks/:id` | 获取任务状态与结果 |
-
-### 额度（需登录）
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/v1/quota/me` | 查看当前套餐与使用情况 |
-
-### 管理后台（需登录 + 管理员权限）
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/v1/admin/users` | 用户列表 |
-| GET | `/api/v1/admin/users/:id` | 用户详情与额度 |
-| POST | `/api/v1/admin/users/:id/plan` | 设置用户套餐 |
-| GET | `/api/v1/admin/stats` | 系统统计数据 |
-| GET | `/api/v1/admin/quotas/today` | 今日所有用户额度 |
-| GET | `/api/v1/admin/subscriptions` | 所有用户订阅信息 |
+- 📘 [技术方案文档](./docs/技术方案文档.md)
+- 📗 [API 接口文档](./docs/API接口文档.md)
 
 ---
 
