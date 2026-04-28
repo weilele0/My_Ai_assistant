@@ -191,7 +191,7 @@ Worker Goroutine 消费 Stream
     ↓
 文档内容 → 通义千问 Embedding API → 向量
     ↓
-向量存入 Chroma 集合 (documents_v2)
+向量存入 Chroma 集合 (my_knowledge_base)
     ↓
 用户提问 → 问题向量化
     ↓

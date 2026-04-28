@@ -20,7 +20,7 @@ func NewDocumentService(
 	embeddingService *EmbeddingService,
 	chromaService *ChromaService,
 ) *DocumentService {
-	//调用这个方法 获取或创建名为 "documents_v2" 的集合
+	//调用这个方法 获取或创建名为 "my_knowledge_base" 的集合（与 RAGService 保持一致）
 	collectionID, err := chromaService.GetOrCreateCollection("my_knowledge_base")
 	if err != nil {
 		fmt.Printf("初始化 Chroma 集合失败: %v\n", err)

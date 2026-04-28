@@ -52,7 +52,7 @@ func main() {
 	taskService := service.NewTaskService(aiService, taskRepo, redisClient)
 
 	// 获取与 DocumentService 相同的 collectionID，确保读写同一个集合
-	ragCollectionID, err := chromaService.GetOrCreateCollection("documents_v2")
+	ragCollectionID, err := chromaService.GetOrCreateCollection("my_knowledge_base")
 	if err != nil {
 		panic("RAG Chroma 集合初始化失败: " + err.Error())
 	}
