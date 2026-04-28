@@ -70,7 +70,7 @@ My_AI_Assistant/
 │       └── pages/            # 各页面模块（chat / documents / tasks / quota / admin / auth）
 ├── go.mod
 ├── go.sum
-└── .env                      # 环境变量（不提交到 Git）
+└── .env                      # 环境变量（需要自己创建）
 ```
 
 ---
