@@ -1,0 +1,41 @@
+# 编译产物
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+go.work.sum
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-*
+
+# 敏感配置
+.env
+.env.*
+!.env.example
+
+# 二进制/依赖
+bin/
+dist/
+
+# 日志和临时文件
+*.log
+logs/
+tmp/
+temp/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Certs / keys
+*.pem
+*.crt
+*.key

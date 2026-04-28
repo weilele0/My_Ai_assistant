@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Assistant 首页</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     认证页（未登录时显示）
+═════════════════════════════════════════════ -->
+<div id="page-auth" class="page active">
+  <div class="auth-page">
+    <div class="auth-card">
+      <!-- Logo -->
+      <div class="auth-logo">
+        <div class="auth-logo-dot"></div>
+        <span class="auth-logo-text">AI Assistant</span>
+      </div>
+
+      <!-- 标题 -->
+      <h1 class="auth-title">欢迎回来</h1>
+      <p class="auth-subtitle">登录以继续使用 AI 助手</p>
+
+      <!-- 模式切换 -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login">登录</button>
+        <button class="auth-tab" id="tab-register">注册</button>
+      </div>
+
+      <!-- 表单 -->
+      <form class="auth-form" id="auth-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="auth-username">用户名</label>
+          <input class="form-input" id="auth-username" type="text" placeholder="输入用户名" autocomplete="username" required />
+        </div>
+        <div class="form-group" id="email-group" style="display:none">
+          <label class="form-label" for="auth-email">邮箱</label>
+          <input class="form-input" id="auth-email" type="email" placeholder="输入邮箱地址" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="auth-password">密码</label>
+          <input class="form-input" id="auth-password" type="password" placeholder="输入密码" autocomplete="current-password" required />
+        </div>
+        <div id="auth-error" class="form-error" style="min-height:18px"></div>
+        <button type="submit" class="btn btn-primary btn-lg btn-block" id="auth-submit">
+          <span class="btn-text" id="auth-btn-text">登录</span>
+        </button>
+      </form>
+
+      <div style="text-align:center;margin-top:20px;font-size:13px;color:var(--text-secondary)">
+        <span id="auth-link-text">还没有账号？</span>
+        <button class="btn btn-ghost btn-sm" id="auth-link-btn" style="padding:2px 8px">立即注册</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     主布局（登录后显示）
+═════════════════════════════════════════════ -->
+<div class="app-layout" id="app-layout" style="display:none">
+
+  <!-- ── 侧边栏 ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">
+        <div class="logo-dot"></div>
+        <span class="logo-text">AI Assistant</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-label">对话</div>
+      <div class="nav-item active" data-page="chat">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>AI 对话</span>
+      </div>
+      <div class="nav-item" data-page="history">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>问答历史</span>
+      </div>
+
+      <div class="nav-divider"></div>
+      <div class="nav-label">工具</div>
+      <div class="nav-item" data-page="documents">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span>文档管理</span>
+      </div>
+      <div class="nav-item" data-page="tasks">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>异步任务</span>
+      </div>
+      <div class="nav-item" data-page="quota">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>额度查询</span>
+      </div>
+
+      <div class="nav-divider" style="display:none" id="admin-divider"></div>
+      <div class="nav-label" style="display:none" id="admin-label">系统</div>
+      <div class="nav-item" data-page="admin" style="display:none" id="admin-nav">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+        <span>管理后台</span>
+      </div>
+    </nav>
+
+    <!-- 用户卡片 -->
+    <div class="sidebar-footer">
+      <div class="user-card" id="user-card">
+        <div class="user-avatar">U</div>
+        <div class="user-info">
+          <div class="user-name">用户</div>
+          <div class="user-plan">免费版</div>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px;justify-content:flex-start;color:var(--text-secondary)" onclick="logout()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        退出登录
+      </button>
+    </div>
+  </aside>
+
+
+  <!-- ── 主内容区 ── -->
+  <main class="main-content">
+
+    <!-- ① AI 对话页 -->
+    <div id="page-chat" class="page">
+      <!-- 顶部栏（固定高度，不压缩） -->
+      <div style="flex-shrink:0;padding:16px 40px 0;border-bottom:1px solid var(--border-light);background:var(--bg-surface);display:flex;align-items:center;justify-content:space-between">
+        <div class="tabs" id="mode-tabs">
+          <button class="tab active" data-mode="generate">AI 生成</button>
+          <button class="tab" data-mode="rag">RAG 问答</button>
+        </div>
+        <div id="quota-mini" style="font-size:12px;color:var(--text-tertiary);display:flex;gap:8px;align-items:center">
+          <span>AI: – 次</span><span style="color:var(--border-medium)">|</span><span>RAG: – 次</span>
+        </div>
+      </div>
+
+      <!-- 聊天主体（flex列：消息区弹性扩展，输入区固定底部） -->
+      <div class="chat-body">
+        <div class="chat-messages" id="chat-messages">
+          <div class="chat-empty">
+            <div class="chat-empty-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="chat-empty-title">开始对话</div>
+            <div class="chat-empty-desc">输入任意主题，AI 将为你生成高质量文章</div>
+          </div>
+        </div>
+
+        <!-- 输入区（固定在底部） -->
+        <div class="chat-input-area">
+        <div class="chat-input-wrapper">
+          <textarea
+            class="chat-textarea"
+            id="chat-textarea"
+            placeholder="输入消息，Enter 发送，Shift+Enter 换行…"
+            rows="1"
+          ></textarea>
+          <button class="btn btn-primary" id="chat-send" style="border-radius:var(--radius-lg);padding:8px 16px;flex-shrink:0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+        <div style="margin-top:8px;font-size:11.5px;color:var(--text-tertiary);text-align:center">
+          AI 生成内容仅供参考，请以专业判断为准
+        </div>
+      </div>
+    </div><!-- /chat-body -->
+    </div>
+
+
+    <!-- ② 问答历史页 -->
+    <div id="page-history" class="page">
+      <div class="page-header">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="page-title">问答历史</h1>
+            <p class="page-desc">RAG 问答产生的对话记录</p>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="clearAllHistory()">清空全部</button>
+        </div>
+      </div>
+      <div class="page-body">
+        <div class="history-list" id="history-list">
+          <div class="empty-state">
+            <div class="empty-state-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="empty-state-title">暂无问答记录</div>
+            <div class="empty-state-desc">在 RAG 问答中产生的对话会自动保存在这里</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ③ 文档管理页 -->
+    <div id="page-documents" class="page">
+      <div class="page-header">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="page-title">文档管理</h1>
+            <p class="page-desc">上传文档后可基于文档进行 RAG 智能问答</p>
+          </div>
+          <button class="btn btn-primary" onclick="openUploadModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            上传文档
+          </button>
+        </div>
+      </div>
+      <div class="page-body">
+        <div class="doc-list" id="doc-list">
+          <div class="empty-state">
+            <div class="empty-state-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="empty-state-title">暂无文档</div>
+            <div class="empty-state-desc">上传文档后，即可基于文档进行 RAG 问答</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ④ 异步任务页 -->
+    <div id="page-tasks" class="page">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">异步任务</h1>
+          <p class="page-desc">提交生成任务，后台处理，完成后可查看结果</p>
+        </div>
+      </div>
+      <div class="page-body">
+        <div class="card" style="margin-bottom:var(--space-8)">
+          <div class="card-header"><span class="card-title">提交新任务</span></div>
+          <div class="card-body">
+            <form id="task-form" style="display:flex;gap:12px;align-items:flex-end">
+              <div class="form-group" style="flex:1">
+                <label class="form-label">文章主题</label>
+                <input class="form-input" id="task-topic" type="text" placeholder="输入想要生成的文章主题…" />
+              </div>
+              <button type="submit" class="btn btn-primary" id="task-submit" style="flex-shrink:0">
+                <span class="btn-text">提交任务</span>
+              </button>
+            </form>
+          </div>
+        </div>
+        <div id="task-list">
+          <div class="empty-state">
+            <div class="empty-state-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="empty-state-title">异步生成任务</div>
+            <div class="empty-state-desc">提交主题后，任务将在后台处理，完成后可在此查看结果</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ⑤ 额度查询页 -->
+    <div id="page-quota" class="page">
+      <div class="page-header">
+        <h1 class="page-title">额度查询</h1>
+        <p class="page-desc">查看当前套餐与每日使用情况</p>
+      </div>
+      <div class="page-body" id="quota-content">
+        <!-- 动态填充 -->
+      </div>
+    </div>
+
+
+    <!-- ⑥ 管理后台页 -->
+    <div id="page-admin" class="page">
+      <div class="page-header">
+        <h1 class="page-title">管理后台</h1>
+        <p class="page-desc">用户管理、套餐设置与系统统计</p>
+      </div>
+      <div class="page-body">
+        <div class="tabs" id="admin-tabs" style="margin-bottom:var(--space-6)">
+          <button class="tab active" data-tab="users">用户管理</button>
+          <button class="tab" data-tab="stats">数据统计</button>
+          <button class="tab" data-tab="quotas">额度管理</button>
+        </div>
+        <div id="admin-content"><!-- 动态填充 --></div>
+      </div>
+    </div>
+
+  </main><!-- /main-content -->
+</div><!-- /app-layout -->
+
+
+<!-- ── Scripts ── -->
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/pages/auth.js"></script>
+<script src="js/pages/chat.js"></script>
+<script src="js/pages/documents.js"></script>
+<script src="js/pages/tasks.js"></script>
+<script src="js/pages/quota.js"></script>
+<script src="js/pages/history.js"></script>
+<script src="js/pages/admin.js"></script>
+
+<!-- ── 初始化 ── -->
+<script>
+(function () {
+  // 导航点击（使用 navigateTo 保持 URL 同步）
+  document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+    item.addEventListener('click', () => {
+      if (item.dataset.page === 'admin' && localStorage.getItem('is_admin') !== 'true') {
+        toast('无管理员权限', 'error');
+        return;
+      }
+      navigateTo(item.dataset.page);
+    });
+  });
+
+  // 浏览器前进/后退
+  window.addEventListener('popstate', (e) => {
+    const page = e.state?.page || 'chat';
+    router(page);
+  });
+
+  // 事件委托：聊天页模式切换（AI 生成 / RAG 问答）
+  // 挂在 #mode-tabs 上，不会冒泡到 document，不会跟其他事件冲突
+  document.getElementById('mode-tabs')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('.tab');
+    if (!btn) return;
+    document.querySelectorAll('#mode-tabs .tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    if (typeof window.setChatMode === 'function') {
+      window.setChatMode(btn.dataset.mode);
+    }
+  });
+
+  // 注册页面 tab 切换（显示/隐藏邮箱字段）
+  document.getElementById('tab-register').addEventListener('click', () => {
+    document.getElementById('email-group').style.display = '';
+    document.getElementById('auth-username').placeholder = '设置用户名';
+    document.querySelector('.auth-subtitle').textContent = '创建一个新账号开始使用';
+  });
+  document.getElementById('tab-login').addEventListener('click', () => {
+    document.getElementById('email-group').style.display = 'none';
+    document.getElementById('auth-username').placeholder = '输入用户名';
+    document.querySelector('.auth-subtitle').textContent = '登录以继续使用 AI 助手';
+  });
+
+  // 检查登录状态，初始化页面
+  if (Token.has()) {
+    showApp();
+    // 从 URL 路径读取目标页面（如 /chat → chat, /admin → admin）
+    const path = window.location.pathname.replace(/^\//, '') || 'chat';
+    router(path);
+  } else {
+    router('auth');
+    history.replaceState({ page: 'auth' }, '', '/login');
+  }
+})();
+</script>
+
+</body>
+</html>
